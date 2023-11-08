@@ -6,7 +6,7 @@ const barbie = {
     wardrobe: [],
     wallet: 0
 }
-
+// define a career class 
 class Career {
     constructor(name, description, income, id){
         this.name = name;
@@ -54,6 +54,7 @@ const randomization = (limit) => {
 for (let i = 10 ; i > 0; i--){
  const job = careerDescriptions[randomization(careerDescriptions.length)]
  const income = careerIncomes[randomization(careerIncomes.length)];
+ // clever way to create random jobs with random income , career 
  careers.push(new Career(job.name, job.description, income, `${job.name}-${income}` ))
 }
 
@@ -71,7 +72,40 @@ class Clothing {
     }
 }
 
+const types = [
+    {name:'Birkin Bag', type: 'bag'},
+    {name:'shoes', type: 'shoes'},
+    {name:'silver belt', type: 'belt'},
+    {name:'diamond ring', type: 'jewelry'}
+ ]
+
+ const randomtype = types[randomization(types.length)];
+ 
+
+// get random color 
+
+const hexCharacters = [0,1,2,3,4,5,6,7,8,9,"A","B","C","D","E","F"]
+
+function getCharacter(index) {
+	return hexCharacters[index]
+}
+
+function generateNewColor() {
+	let hexColorRep = "#"
+
+	for (let index = 0; index < 6; index++){
+		const randomPosition = Math.floor ( Math.random() * hexCharacters.length ) 
+    	hexColorRep += getCharacter( randomPosition )
+	}
+	
+	return hexColorRep
+}
+
+const clothes = new Clothing (randomtype.name, "Hermes", generateNewColor(),randomtype.type, "small",3000)
+
 const birkin = new Clothing('Birkin Bag', 'Hermes', 'purple', 'bag', 'lg', 15470 )
+const redBottomShoes = new Clothing('red bottom shoes', 'Dior', 'red', 'shoes', "size 24", 5000 )
+
 
 
 
@@ -88,6 +122,7 @@ barbie.render = () => {
     <h3> Each week ${barbie.name} takes home $${barbie.career.income}</h3>
     <h3> Currently ${barbie.name} has $${barbie.wallet} in their bank account</h3>
     <div> <h2>Wardrobe Contains: </h2> 
+  
     <ul>${
         barbie.wardrobe.map((item => {
             return `<li>
@@ -130,4 +165,31 @@ workButton.addEventListener('click', ()=>{
     // I want to re-render the content so that i can see the updated information in the browser
     barbie.render();
 })
+
+
+
+const redbotton = document.getElementById("redbuttoms");
+redbotton.addEventListener("click", ()=>{
+    if (barbie.wallet >= redBottomShoes.price){
+        barbie.wardrobe.push(redBottomShoes);
+        barbie.wallet -= redBottomShoes.price;
+        barbie.render();
+    } else {
+        alert("You do not have enough money to buy red bottoms shoes.")
+    }   
+});
+
+const randomClothes = document.getElementById("randomClothes");
+randomClothes .addEventListener("click", ()=>{
+    if (barbie.wallet >= clothes.price){
+        barbie.wardrobe.push(clothes);
+        barbie.wallet -= clothes.price;
+        barbie.render();
+    } else {
+        alert("You do not have enough money to buy red bottoms shoes.")
+    }   
+});
+redbotton.addEventListener("mouseover", (e) =>{
+  e.target.style.backgroundColor = "red";
+});
 
