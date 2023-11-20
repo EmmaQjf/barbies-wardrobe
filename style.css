@@ -4,7 +4,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
+  /* height: 100vh; */
+  overflow: scroll;
 }
 
 
@@ -74,3 +75,14 @@ background-color: yellow;
 background-color: red;
 } */
 
+#ken-money {
+  display:none;
+}
+
+#barbie-money {
+  display:none;
+}
+
+/* .money {
+  display: block;
+} */

@@ -5,13 +5,27 @@ console.log('App is connected');
 const barbie = {
     name: 'Barbie',
     wardrobe: [],
+    outfit: "",
     wallet: 0,
     rental: [],
     garage: [],
     assets:[]
 }
 
+//TASK4 Define Ken 
+const ken = {
+    name: 'Ken',
+    wardrobe: [],
+    wallet: 20000
+}
 
+// TASK5 Barbie's outfit of jobs
+const barbieOOT = [
+    {job:"lawyer", oot: "dress, blazer, high heels"},
+    {job:"software-engineer", oot: "jeans, sweater, sneaker"},
+    {job:"doctor", oot: "jeans,T-shirt,flat"},
+    {job:"infuencer", oot: "corset,mini-skirt,highknee boots"}
+]
 
 class Career {
     constructor(name, description, income, id){
@@ -64,6 +78,7 @@ for (let i = 10 ; i > 0; i--){
 }
 
 
+
 // barbie.career = careers[randomization(careers.length)];
 // TASK1: CAREER CHANGE FEATURE 
 barbie.career = {};
@@ -82,47 +97,31 @@ careerOptions.addEventListener("click", () => {
 // push all the career names into the dropmenu
 for (let career of careers) {
     let careerName = document.createElement("li");
-    careerName.innerHTML = `${career.name}`;
+    careerName.innerHTML = `${career.name} makes ${career.income}`;
     careerName.style.boxShadow = "1px 1px 2px black";
     careerName.style.listStyleType = "none";
     careerName.style.paddingLeft= "1rem";
     careerDropDownMenu.append(careerName);
 }
-// careerOptions.addEventListener("click", () => {
-//     for (let career of careers) {
-//        let careerName = document.createElement("li");
-//        careerName.innerHTML = `${career.name}`;
-//        careerName.style.boxShadow = "1px 1px 2px black";
-//        careerName.style.listStyleType = "none";
-//        careerName.style.paddingLeft= "1rem";
-//        careerDropDownMenu.append(careerName);
-//     };
-//     careerDropDownMenu.style.display = "block";
-// })
 
-
-
+// TASK5 Barbie's outfit of jobs
 const careerOption = document.querySelectorAll("#careerdropdownmenu li");
 // each career option is clickable and update the info about job and salary
 for (let i = 0; i< careerOption.length; i++) {
     careerOption[i].addEventListener("click", () => {
-        barbie.career = careers[i];
+        barbie.career = careers[i]; 
+        const outfitobject = barbieOOT.find(element => element.job ===
+            careers[i].name)
+        console.log(outfitobject);
+        barbie.outfit =outfitobject.oot;
         barbie.render();
         careerDropDownMenu.classList.remove("show");
     })
 }
-// for (let element of careerOption) {
-//     element.addEventListener("click", () => {
-//         console.log(element);
-//         barbie.career = careers.find(ob => ob.name === element)
-//     })
-// }
 
 
-// Task 2 Sell Wardrobe items
-// Implement a feature allowing Barbie to sell items from her wardrobe.
-// Add buttons next to each wardrobe item with the label "Sell".
-// When clicked, add the item's price back to Barbie's wallet and remove the item from the wardrobe.
+
+
 class Clothing {
     constructor(name, designer, color, type, size, price){
         this.name = name;
@@ -148,6 +147,7 @@ barbie.render = () => {
     barbie.el.innerHTML = `
     <h1>${barbie.name} Status</h1>
     <h3>${barbie.name} works as a ${barbie.career.name} </h3>
+    <h3>${barbie.name} 's outfit of today is ${barbie.outfit} </h3>
     <h3> Each week ${barbie.name} takes home $${barbie.career.income}</h3>
     <h3> Currently ${barbie.name} has $${barbie.wallet} in their bank account</h3>
     <div> <h2>Wardrobe Contains: </h2> 
@@ -158,6 +158,7 @@ barbie.render = () => {
             ${item.name} made by ${item.designer}
             that is worth ${item.price} in size 
             ${item.size} <button id = "wardrobeindividualsellbtn">Sell the item</button>
+            <button id = "barbieindividualtransferbtn">Transfer</button>
             </li> `
         } 
         )).join('')
@@ -187,13 +188,15 @@ barbie.render = () => {
         
     }</ul>
     </div>
+
     <div> <h2>assets Contains: </h2> 
     <ul>${
         barbie.assets.map((item => {
             return `<li>
             ${barbie.name} has a new
             ${item.name}
-            <button id ="assetsindividualsellbtn">Sell the asset</button></li>`
+            <button id ="assetsindividualsellbtn">Sell the asset</button>
+            </li>`
         } 
         )).join('')
     }</ul>
@@ -203,6 +206,8 @@ const wardrobeIndividualSellBtn = document.querySelectorAll("#barbie #wardrobein
 const assetsIndividualSellBtn = document.querySelectorAll("#barbie #assetsindividualsellbtn")
 thingsToSell(wardrobeIndividualSellBtn, barbie.wardrobe);
 thingsToSell(assetsIndividualSellBtn, barbie.assets);
+
+
 // const individualSellBtn = document.querySelectorAll("#barbie #individualsellbtn");
 // console.log(individualSellBtn);
 // for (let i = 0; i< individualSellBtn.length; i++){
@@ -216,10 +221,20 @@ thingsToSell(assetsIndividualSellBtn, barbie.assets);
 //     console.log(barbie.wardrobe)
 //     })
 //  }
+
+// TASK 4 to transfer clothes between ken and barbie 
+    // variables to define to move the clothes items 
+    const barbieIndividualTransferBtns= document.querySelectorAll("#barbieindividualtransferbtn");
+    console.log(barbieIndividualTransferBtns);
+    tranferItemF(barbie,ken,barbieIndividualTransferBtns);
+
 }
 
 barbie.render()
-
+// TASK 2 Sell Wardrobe items
+// Implement a feature allowing Barbie to sell items from her wardrobe.
+// Add buttons next to each wardrobe item with the label "Sell".
+// When clicked, add the item's price back to Barbie's wallet and remove the item from the wardrobe.
 // TASK3 function to sell assets and wardrobe
 function thingsToSell(things, category) {
     for (let i = 0; i< things.length; i++){
@@ -229,7 +244,12 @@ function thingsToSell(things, category) {
         category.splice(index,1);
         const sellingPrice = (Math.floor(Math.random()* ((200 - 70) + 1) + 70)) * 0.01
         barbie.wallet += Math.floor(sellingPrice * itemToSell.price) 
-        if (itemToSell.name === "")
+        if (itemToSell.name === "Tesla") {
+            barbie.career.income -= itemToSell.income;
+        }
+        if (itemToSell.name === "Condo") {
+            barbie.career.income -= itemToSell.income;
+        }
         barbie.render()  
         })
      }
@@ -360,3 +380,146 @@ teslaBtn.addEventListener('click', () => {
         alert('Stop trippin you know you aint got it like that')
     }
 })
+
+//TASK 4 Incorporate Ken:
+
+// Create a ken object with properties similar to barbie, such as name, wardrobe, and wallet.
+// Display Ken's wardrobe and wallet balance in the UI.
+// Add functionality to transfer items and money between Barbie and Ken.
+const belt = new Clothing('belt', 'Hermes', 'purple', 'accessories', 'lg', 1700 )
+const hat = new Clothing('hat', 'Christian Loboutin', 'black', 'accessories', '6', 4000)
+ken.wardrobe.push(belt,hat);
+
+const kenmoneyTransfer = document.getElementById("ken-money-transfer");
+const kenmoney = document.getElementById("ken-money");
+const kenItemTransfer = document.getElementById("ken-item-transfer");
+const barbiemoneyTransfer = document.getElementById("barbie-money-transfer");
+const barbiemoney = document.getElementById("barbie-money")
+
+
+
+// function to transfer clothes items
+function tranferItemF(giver, receiver, givertransferbtns) {
+    for (let i = 0; i< giver.wardrobe.length; i++) {
+        let wardrobeindex = i;
+        let clothesToGive = giver.wardrobe[i];
+        givertransferbtns[i].addEventListener("click", () => {
+            console.log(clothesToGive);
+            giver.wardrobe.splice(wardrobeindex,1);
+            receiver.wardrobe.push(clothesToGive)
+        barbie.render();
+        ken.render();
+        })
+    }
+}
+
+
+const kenel = document.getElementById("ken");
+ken.render = () => {
+    kenel.innerHTML = `
+    <h1>${ken.name} Status</h1>
+    <h3> Currently ${ken.name} has $${ken.wallet} in their bank account</h3>
+    <ul> ${ken.wardrobe.map((item =>{
+         return `<li>${ken.name} has ${item.color} 
+         ${item.name} made by ${item.designer}
+         that is worth ${item.price} in size 
+         ${item.size}</li><button id = "kenindividualtransferbtn">Transfer</button>`})).join("")
+    }
+    </ul>`
+    // variables to define to move the clothes items 
+    const kenIndividualTransferBtns= document.querySelectorAll("#kenindividualtransferbtn");
+    console.log(kenIndividualTransferBtns);
+    tranferItemF(ken,barbie, kenIndividualTransferBtns);
+}
+ken.render();
+
+// transfer money
+
+function moneyTransferF(giver, receiver,giverinputbox) {
+   giverinputbox.style.display = 'block';
+//    setTimeout(() => {
+//     givermoney.style.display = 'none'
+//    },3000);
+    // timeouttoUndisplay ();
+  const moneyValue = giverinputbox.value;
+  console.log(moneyValue);
+  giver.wallet -= moneyValue;
+  receiver.wallet += moneyValue;
+  
+}
+
+kenmoneyTransfer.addEventListener("click", () =>{
+    moneyTransferF(ken,barbie,kenmoney);
+    ken.render();
+    barbie.render()
+}
+)
+
+barbiemoneyTransfer.addEventListener("click", () =>{
+    moneyTransferF(barbie,ken,barbiemoney);
+    ken.render();
+    barbie.render()
+}
+)
+
+
+//Interactivity Enhancements:
+
+// Allow Barbie to change outfits based on her career choice.
+// see line 22-28 and line 113-116
+// Introduce the ability for Barbie and Ken to have a joint garage sale of their items, combining their wardrobes for the sale.
+const garageSaleBtn = document.getElementById("garagesalebtn");
+const garageSaleContainer = document.getElementById("garage-sale-container");
+
+garageSaleBtn.addEventListener("click",garageSale);
+function garageSale() {
+    garageSaleContainer.innerHTML = `
+    <h3>Barbie's clothes are below</h3>
+    <ul>${
+        barbie.wardrobe.map((item => {
+            return `<li>
+            ${barbie.name} has a ${item.color} 
+            ${item.name} made by ${item.designer}
+            that is worth ${item.price} in size 
+            ${item.size} 
+            </li> <button id = "barbiegarageSbtn">Sell clothes</button>`
+        } 
+        )).join('')
+    }</ul>
+    <h3>Ken's clothes are below</h3>
+    <ul>${
+        ken.wardrobe.map((item => {
+            return `<li>
+            ${ken.name} has a ${item.color} 
+            ${item.name} made by ${item.designer}
+            that is worth ${item.price} in size 
+            ${item.size} 
+            </li> <button id = "kengarageSbtn">Sell clothes</button>`
+        } 
+        )).join('')
+    }</ul>
+    `
+const barbieGarageSBtns = document.querySelectorAll("#barbiegarageSbtn")
+const kenGarageSBtns = document.querySelectorAll("#kengarageSbtn")
+GaragethingsToSell(barbie,barbie.wardrobe,barbieGarageSBtns);
+GaragethingsToSell(ken,ken.wardrobe,kenGarageSBtns);
+}
+
+
+
+function GaragethingsToSell(character,characterwardrobe, sellbuttons) {
+    for (let i = 0; i< characterwardrobe.length; i++){
+        let itemsold = characterwardrobe[i];
+        sellbuttons[i].addEventListener("click",()=> {
+        characterwardrobe.splice(i,1);
+        const sellingPrice = (Math.floor(Math.random()* ((200 - 70) + 1) + 70)) * 0.01
+        character.wallet += Math.floor(sellingPrice * itemsold.price) 
+        barbie.render()  
+        ken.render() 
+        garageSale()
+        })
+     }
+}
+
+
+// Enable interactive shopping experiences where users can drag and drop items to and from the wardrobe.

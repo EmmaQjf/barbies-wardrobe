@@ -7,6 +7,7 @@
     <title>Barbie's Wardrobe</title>
 </head>
 <body>
+
     <div id="container">
         <div class="box-1">
           <img src="https://i.imgur.com/M6TTSui.jpg" class="box-image">
@@ -28,7 +29,37 @@
         <button id="condo">Buy Condo</button>
         <button id="sell">Sell</button>
         <button id="tesla">Buy Tesla</button>
+        <button id="barbie-money-transfer">moneyTransfer</button>
+        <input type="text" id="barbie-money" name="money" class = "moneybox" autocomplete="off"> 
+
+    <button id="barbie-item-transfer">itemTransfer</button>     
     </div>
+
+  <div id = "ken-container">
+    <div id="container">
+        <div class="box-1">
+          <img src="https://i.imgur.com/1waN0Ak.png" class="box-image" width = "150px">
+        </div>
+        <div class="box-2">
+          <h1 class="info">Ben</h1>
+          <p><i>- Living the dream with Barbie since 1959</i> </p>
+        </div>
+    </div>    
+  </div>
+
+  <div id="ken">
+  </div>
+  <div class="button-container">   
+    <button id="ken-money-transfer">moneyTransfer</button>
+    <input onmouseleave = "this.style.display = 'none'" onFocus="this.value=''"  type="text" id="ken-money" name="money" class = "moneybox"> 
+    <!-- <input type="text" id="ken-money" name="money" class = "moneybox">  -->
+    <button id="ken-item-transfer">itemTransfer</button> 
+    <button id="garagesalebtn">garagesale</button>        
+  </div>
+
+  <div id = "garage-sale-container">
+
+  </div>
  
     
     <script src="app.js"></script>
